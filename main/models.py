@@ -2,14 +2,12 @@ from django.db import models
 from accounts.models import MyUser as User
 from services.mixin import DateMixin, SlugMixin
 from services.generator import Generator
-from services.uploader import Uploader
 
 
 class Instagram(DateMixin, SlugMixin):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
-    pp = models.ImageField(upload_to=Uploader.upload_images_to_profile, null=True, blank=True)
     following = models.IntegerField(null=True, blank=True)
     followers = models.IntegerField(null=True, blank=True)
 
