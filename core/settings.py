@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     #third-party apps
     'selenium',
+    'redis',
+    'celery'
 ]
 
 MIDDLEWARE = [
@@ -130,7 +132,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+
+
+REDIS_HOST = os.getenv("REDIS_HOST", "redis")
 
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379"
 CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379"

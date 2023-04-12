@@ -7,13 +7,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
 from main.tasks import send_email
-
+from webdriver_manager.chrome import ChromeDriverManager
 send_email.delay(3,4)
 
 def profile(request, slug):
     user = get_object_or_404(User, slug=slug)
-    user.instagram.followers = scrape_data(request)['followers']
-    user.instagram.following = scrape_data(request)['following']
+
     context = {
         'user': user,
         'insta_datas': scrape_data(request)
@@ -23,7 +22,7 @@ def profile(request, slug):
 
 def add_instagram(request, slug):
     user = get_object_or_404(User, slug=slug)
-
+    scrape_data(request)
     context = {}
     form = InstagramAddForm()
     if request.method == "POST":
@@ -45,7 +44,7 @@ def add_instagram(request, slug):
 def scrape_data(request):
     username = request.user.instagram.username
     password = request.user.instagram.password
-    driver = webdriver.Chrome(executable_path="chromedriver.exe")
+    driver = webdriver.Chrome(executable_path="chromedriver")
     driver.get('https://www.instagram.com/accounts/login/')
     time.sleep(2)
     username_field = driver.find_element(By.NAME, 'username')
