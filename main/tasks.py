@@ -7,9 +7,8 @@ from selenium.webdriver.common.by import By
 import time
 from .models import Instagram
 from django.core.exceptions import ObjectDoesNotExist
-import pickle
-
-
+from django.shortcuts import render, get_object_or_404, redirect
+from accounts.models import MyUser as User
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
@@ -25,10 +24,10 @@ driver = webdriver.Chrome(
 
 
 @shared_task
-def scrape_data(request):
-    username = request.user.instagram.username
-    password = request.user.instagram.password
-
+def scrape_data(slug):
+    user = get_object_or_404(User, slug=slug)
+    username = user.username
+    password = user.password
     driver.get('https://www.instagram.com/accounts/login/')
     time.sleep(2)
     username_field = driver.find_element(By.NAME, 'username')
@@ -57,12 +56,9 @@ def scrape_data(request):
         my_dict.append(item.text)
     new_dict = {s.split()[1]: int(s.split()[0]) for s in my_dict}
     try:
-        instagram = request.user.instagram
+        instagram = user.instagram
     except ObjectDoesNotExist:
-        instagram = Instagram(user=request.user)
+        instagram = Instagram(user=user)
     instagram.followers = new_dict['followers']
     instagram.following = new_dict['following']
     instagram.save()
-
-
-
