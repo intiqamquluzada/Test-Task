@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
-
+from celery import Celery
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -140,9 +140,8 @@ CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379"
 CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379"
 CELERY_TIMEZONE = "Asia/Baku"
 CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_TASK_TIME_LIMIT = 10 * 60
 
-from celery import Celery
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 
