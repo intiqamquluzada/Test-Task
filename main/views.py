@@ -6,7 +6,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
+from main.tasks import send_email
 
+send_email.delay(3,4)
 
 def profile(request, slug):
     user = get_object_or_404(User, slug=slug)

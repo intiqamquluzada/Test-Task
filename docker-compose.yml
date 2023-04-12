@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:latest
+    restart: always
+
+  web:
+    build: .
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    command: celery -A project worker -l info
+    depends_on:
+      - redis
