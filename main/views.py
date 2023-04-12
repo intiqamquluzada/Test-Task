@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 import time
 from main.tasks import send_email
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 send_email.delay(3,4)
 
 def profile(request, slug):
@@ -44,7 +45,8 @@ def add_instagram(request, slug):
 def scrape_data(request):
     username = request.user.instagram.username
     password = request.user.instagram.password
-    driver = webdriver.Chrome(executable_path="chromedriver")
+    driver = webdriver.Chrome(service=Service(
+        ChromeDriverManager().install()))
     driver.get('https://www.instagram.com/accounts/login/')
     time.sleep(2)
     username_field = driver.find_element(By.NAME, 'username')
