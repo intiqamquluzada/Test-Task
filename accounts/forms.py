@@ -76,6 +76,8 @@ class LoginForm(forms.ModelForm):
 class RegisterForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
+    instagram_username = forms.CharField(label='Instagram Username')
+    instagram_password = forms.CharField(label='Instagram Password', widget=forms.PasswordInput)
 
     class Meta:
         model = User
@@ -96,5 +98,6 @@ class RegisterForm(forms.ModelForm):
 
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("This email already exists")
+
 
         return self.cleaned_data
